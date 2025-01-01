@@ -13,6 +13,11 @@ app.use(express.urlencoded({ extended: true }));
 // turn off x-powered-by
 app.disable("x-powered-by");
 
+app.get("/", (req, res) => {
+  // renders static public/index.html (not ejs)
+  res.render("index");
+});
+
 app.get("/form", (req, res) => {
   const userName = req.query.name || "손님";
   res.render("form", { userName });
