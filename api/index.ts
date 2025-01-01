@@ -68,9 +68,4 @@ app.listen(3000, async () => {
   console.log("서버 실행 중: http://localhost:3000");
 });
 
-process.on("SIGINT", async () => {
-  await redisClient.quit();
-  process.exit();
-});
-
 export default app;
