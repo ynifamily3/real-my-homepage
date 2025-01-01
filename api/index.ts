@@ -10,7 +10,11 @@ const redisClient = createClient({
   url: process.env.REDIS_URL,
 });
 
+redisClient.on("connect", () => {
+  console.info("Redis connected!");
+});
 redisClient.on("error", (err) => console.log("Redis Client Error", err));
+redisClient.connect().then();
 
 // public dir
 app.use(express.static(path.join(__dirname, "..", "/public")));
@@ -63,8 +67,7 @@ app.use((req, res, next) => {
   });
 });
 
-app.listen(3000, async () => {
-  await redisClient.connect();
+app.listen(3000, () => {
   console.log("서버 실행 중: http://localhost:3000");
 });
 
