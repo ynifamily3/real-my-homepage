@@ -45,12 +45,6 @@ app.get("/", async (req, res) => {
   });
 });
 
-app.get("/test", async (req, res) => {
-  const count = Number(await redisClient.get("count")) || 0;
-  await redisClient.incr("count");
-  res.send(`Express on Vercel: ${process.env.HELLO} / ${count + 1}`);
-});
-
 app.get("/form", (req, res) => {
   const userName = req.query.name || "손님";
   res.render("form", { title: "폼 전송", userName });
@@ -69,6 +63,12 @@ app.post("/form", (req, res) => {
     userPassword,
     userPasswordConfirm,
     userEmail,
+  });
+});
+
+app.get("/map", (req, res) => {
+  res.render("map", {
+    title: "지도",
   });
 });
 

@@ -21,3 +21,12 @@ body {
 a {
   @apply text-blue-500 underline underline-offset-2;
 }
+
+button,
+input[type="submit"] {
+  @apply p-2 bg-blue-500 text-white rounded cursor-pointer;
+}
+
+input[type="text"] {
+  @apply p-2 border border-gray-300 rounded read-only:bg-gray-100;
+}
