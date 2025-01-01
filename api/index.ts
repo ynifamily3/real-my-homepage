@@ -3,6 +3,7 @@ import path from "path";
 import expressLayouts from "express-ejs-layouts";
 import "dotenv/config";
 import { createClient } from "redis";
+import cookieParser from "cookie-parser";
 
 const app = express();
 
@@ -24,10 +25,20 @@ app.use(expressLayouts);
 app.set("layout", "layout"); // 'views/layout.ejs' 파일을 레이아웃으로 사용
 
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 app.get("/", async (req, res) => {
   const count = Number(await redisClient.get("count")) || 0;
-  await redisClient.incr("count");
+  if (!req.cookies["count-checked"]) {
+    await redisClient.incr("count");
+    res.cookie("count-checked", "true", {
+      maxAge: 86400 * 1000, // 1 day
+      httpOnly: true,
+      sameSite: "lax",
+      secure: true,
+      path: "/",
+    });
+  }
   res.render("home", {
     title: "",
     count: count.toLocaleString("ko-KR"),
