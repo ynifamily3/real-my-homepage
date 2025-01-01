@@ -2,8 +2,15 @@ import express from "express";
 import path from "path";
 import expressLayouts from "express-ejs-layouts";
 import "dotenv/config";
+import { createClient } from "redis";
 
 const app = express();
+
+const redisClient = createClient({
+  url: process.env.REDIS_URL,
+});
+
+redisClient.on("error", (err) => console.log("Redis Client Error", err));
 
 // public dir
 app.use(express.static(path.join(__dirname, "..", "/public")));
@@ -14,14 +21,19 @@ app.set("layout", "layout"); // 'views/layout.ejs' 파일을 레이아웃으로 
 
 app.use(express.urlencoded({ extended: true }));
 
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
+  const count = Number(await redisClient.get("count")) || 0;
+  await redisClient.incr("count");
   res.render("home", {
     title: "",
+    count: count.toLocaleString("ko-KR"),
   });
 });
 
-app.get("/test", (req, res) => {
-  res.send(`Express on Vercel: ${process.env.HELLO}`);
+app.get("/test", async (req, res) => {
+  const count = Number(await redisClient.get("count")) || 0;
+  await redisClient.incr("count");
+  res.send(`Express on Vercel: ${process.env.HELLO} / ${count + 1}`);
 });
 
 app.get("/form", (req, res) => {
@@ -51,8 +63,14 @@ app.use((req, res, next) => {
   });
 });
 
-app.listen(3000, () => {
+app.listen(3000, async () => {
+  await redisClient.connect();
   console.log("서버 실행 중: http://localhost:3000");
+});
+
+process.on("SIGINT", async () => {
+  await redisClient.quit();
+  process.exit();
 });
 
 export default app;
