@@ -3,12 +3,15 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "tsx watch api/index.ts",
+    "dev": "concurrently \"tsx watch api/index.ts\" \"npx tailwindcss -i ./api/base.css -o ./public/style.css --watch\"",
+    "prebuild": "npx tailwindcss -i ./api/base.css -o ./public/style.css",
     "build": "tsc"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
     "@types/node": "^22.10.2",
+    "concurrently": "^9.1.2",
+    "tailwindcss": "^3.4.17",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2"
   },
