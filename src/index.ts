@@ -3,10 +3,9 @@ import path from "path";
 
 const app = express();
 
-const __dirname = path.resolve();
 // public dir
-app.use(express.static(__dirname + "/public"));
-app.set("views", __dirname + "/views");
+app.use(express.static(path.join(__dirname, "..", "/public")));
+app.set("views", path.join(__dirname, "..", "/views"));
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
 
