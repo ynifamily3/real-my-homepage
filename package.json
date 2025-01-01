@@ -4,9 +4,19 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "deploy": "surge ./deploy roco.moe"
+    "start": "node --env-file=.env dist/index.js",
+    "build": "tsc",
+    "dev": "tsx watch --env-file=.env src/index.ts"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.2",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
   },
   "dependencies": {
-    "surge": "^0.24.6"
+    "ejs": "^3.1.10",
+    "express": "^4.21.2"
   }
 }
