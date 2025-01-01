@@ -46,19 +46,11 @@
     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
     <meta name="theme-color" content="#ffffff" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>홈페이지 2025년 버전</title>
+    <title>
+      <%= title ? title + ' | 홈페이지 2025년 버전' : '홈페이지 2025년 버전' %>
+    </title>
   </head>
   <body>
-    <img src="/apple-icon.png" alt="사과 아이콘" width="192" height="192" />
-    <p>진짜로 홈페이지 만들어야지...</p>
-    <p>그런데 아이디어가 안 떠올라요 ㅜㅜ</p>
-    <p>하고 싶은 것</p>
-    <ul>
-      <li>MPA 홈페이지 만들기</li>
-      <li>서버 위주로 웹 서비스 만들기</li>
-      <li>온라인 게임 만들기</li>
-    </ul>
-    <p>폼 제출 테스트: <a href="/form">하러 가기</a></p>
-    <footer>제작일: 2025년 1월 1일 23시</footer>
+    <%- body %>
   </body>
 </html>

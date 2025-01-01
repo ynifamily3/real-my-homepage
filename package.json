@@ -3,12 +3,13 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently \"tsx watch api/index.ts\" \"npx tailwindcss -i ./api/base.css -o ./public/style.css --watch\"",
-    "prebuild": "npx tailwindcss -i ./api/base.css -o ./public/style.css",
+    "dev": "concurrently \"tsx watch api/index.ts\" \"tailwindcss -i ./api/base.css -o ./public/style.css --watch\"",
+    "prebuild": "tailwindcss -i ./api/base.css -o ./public/style.css",
     "build": "tsc"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
+    "@types/express-ejs-layouts": "^2.5.4",
     "@types/node": "^22.10.2",
     "concurrently": "^9.1.2",
     "tailwindcss": "^3.4.17",
@@ -18,6 +19,7 @@
   "dependencies": {
     "dotenv": "^16.4.7",
     "ejs": "^3.1.10",
-    "express": "^4.21.2"
+    "express": "^4.21.2",
+    "express-ejs-layouts": "^2.5.1"
   }
 }
