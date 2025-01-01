@@ -5,8 +5,8 @@
     "strict": true,
     "esModuleInterop": true,
     "outDir": "./dist",
-    "rootDir": "./src"
+    "rootDir": "api"
   },
-  "include": ["src"],
+  "include": ["api"],
   "exclude": ["node_modules"]
 }
