@@ -11,7 +11,7 @@ app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
-  res.render("index");
+  res.send("Express on Vercel");
 });
 
 app.get("/form", (req, res) => {
@@ -38,6 +38,8 @@ app.use((req, res, next) => {
   res.status(404).render("404");
 });
 
-app.listen(3000, () => console.log("Server ready on port 3000."));
+app.listen(3000, () => {
+  console.log("Server ready on port 3000.");
+});
 
 export default app;
