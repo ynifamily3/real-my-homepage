@@ -10,11 +10,7 @@ app.set("views", path.join(__dirname, "..", "/views"));
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
 
-// turn off x-powered-by
-app.disable("x-powered-by");
-
 app.get("/", (req, res) => {
-  // renders static public/index.html (not ejs)
   res.render("index");
 });
 
