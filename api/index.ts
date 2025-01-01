@@ -1,6 +1,6 @@
 import express from "express";
-import { createServer } from "http";
 import path from "path";
+import "dotenv/config";
 
 const app = express();
 
