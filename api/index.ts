@@ -10,8 +10,8 @@ app.set("views", path.join(__dirname, "..", "/views"));
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
 
-app.get("/", (req, res) => {
-  res.send("Express on Vercel");
+app.get("/test", (req, res) => {
+  res.send(`Express on Vercel: ${process.env.HELLO}`);
 });
 
 app.get("/form", (req, res) => {
