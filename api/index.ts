@@ -1,7 +1,6 @@
 import express from "express";
 import { createServer } from "http";
 import path from "path";
-import type { VercelRequest, VercelResponse } from "@vercel/node";
 
 const app = express();
 
