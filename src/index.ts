@@ -1,5 +1,7 @@
 import express from "express";
+import { createServer } from "http";
 import path from "path";
+import type { VercelRequest, VercelResponse } from "@vercel/node";
 
 const app = express();
 
@@ -36,8 +38,6 @@ app.use((req, res, next) => {
   res.status(404).render("404");
 });
 
-app.listen(3000, () => {
-  console.log("Server is running on http://localhost:3000");
-});
-
-console.log(process.env.HELLO);
+export default (req: VercelRequest, res: VercelResponse) => {
+  app(req as any, res as any);
+};
