@@ -10,6 +10,9 @@ app.set("views", __dirname + "/views");
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
 
+// turn off x-powered-by
+app.disable("x-powered-by");
+
 app.get("/form", (req, res) => {
   const userName = req.query.name || "손님";
   res.render("form", { userName });
