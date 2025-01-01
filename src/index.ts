@@ -38,6 +38,4 @@ app.use((req, res, next) => {
   res.status(404).render("404");
 });
 
-export default (req: VercelRequest, res: VercelResponse) => {
-  app(req as any, res as any);
-};
+export default app;
