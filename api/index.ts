@@ -45,6 +45,24 @@ app.get("/", async (req, res) => {
   });
 });
 
+app.get("/couont", async (req, res) => {
+  const count = Number(await redisClient.get("count")) || 0;
+  if (!req.cookies["count-checked"]) {
+    await redisClient.incr("count");
+    res.cookie("count-checked", "true", {
+      maxAge: 86400 * 1000, // 1 day
+      httpOnly: true,
+      sameSite: "lax",
+      secure: true,
+      path: "/",
+    });
+  }
+  res.render("count", {
+    title: "카운터 - " + count,
+    count: count.toLocaleString("ko-KR"),
+  });
+});
+
 app.get("/form", (req, res) => {
   const userName = req.query.name || "손님";
   res.render("form", { title: "폼 전송", userName });
