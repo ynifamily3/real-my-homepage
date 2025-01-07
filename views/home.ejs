@@ -9,4 +9,17 @@
   <li>온라인 게임 만들기</li>
 </ul>
 <p>폼 제출 테스트: <a href="/form">하러 가기</a></p>
-<footer>제작일: 2025년 1월 1일 23시 59분!</footer>
+<button type="button" id="happy">누르면 행복해지는 버튼(GTM테스트)</button>
+<script>
+const button = document.getElementById('happy');
+if (button) {
+  const age = Number(prompt("나이를 입력하세요", "29"));
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({
+      event: '행복버튼클릭',
+      age: age,
+  });
+  alert(`당신은 이제 ${age+1}살이라서 행복합니다.`);
+}
+</script>
+<footer>제작일: 2025년 1월 7일 22시 49분!</footer>
