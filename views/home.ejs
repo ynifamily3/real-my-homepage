@@ -13,6 +13,7 @@
 <script>
 const button = document.getElementById('happy');
 if (button) {
+button.addEventListener('click', () => {
   const age = Number(prompt("나이를 입력하세요", "29"));
   window.dataLayer = window.dataLayer || [];
   window.dataLayer.push({
@@ -20,6 +21,6 @@ if (button) {
       age: age,
   });
   alert(`당신은 이제 ${age+1}살이라서 행복합니다.`);
-}
+});
 </script>
 <footer>제작일: 2025년 1월 7일 22시 49분!</footer>
