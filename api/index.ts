@@ -6,6 +6,7 @@ import { createClient } from "redis";
 import cookieParser from "cookie-parser";
 
 const app = express();
+app.disable("x-powered-by");
 
 const redisClient = createClient({
   url: process.env.REDIS_URL,
