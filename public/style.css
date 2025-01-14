@@ -587,6 +587,14 @@ video {
   height: 300px;
 }
 
+.h-\[40px\] {
+  height: 40px;
+}
+
+.w-\[185px\] {
+  width: 185px;
+}
+
 .w-full {
   width: 100%;
 }
@@ -621,6 +629,10 @@ video {
 
 .border {
   border-width: 1px;
+}
+
+.border-none {
+  border-style: none;
 }
 
 .bg-green-500 {

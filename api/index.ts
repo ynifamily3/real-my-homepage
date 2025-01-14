@@ -29,13 +29,13 @@ app.use(cookieParser());
 
 app.get("/", async (req, res) => {
   const count = Number(await redisClient.get("count")) || 0;
+  console.log("쿠키?", req.cookies["count-checked"]);
   if (!req.cookies["count-checked"]) {
     await redisClient.incr("count");
     res.cookie("count-checked", "true", {
       maxAge: 86400 * 1000, // 1 day
       httpOnly: true,
       sameSite: "lax",
-      secure: true,
       path: "/",
     });
   }
@@ -53,7 +53,6 @@ app.get("/couont", async (req, res) => {
       maxAge: 86400 * 1000, // 1 day
       httpOnly: true,
       sameSite: "lax",
-      secure: true,
       path: "/",
     });
   }
@@ -87,6 +86,43 @@ app.post("/form", (req, res) => {
 app.get("/map", (req, res) => {
   res.render("map", {
     title: "지도",
+  });
+});
+
+app.get("/login.php", (req, res) => {
+  const clientId = process.env.NAVER_CLIENT_ID;
+  const redirectURI = `${req.protocol}://${req.get(
+    "host"
+  )}/login/callback/naver.jsp`;
+  const state = crypto.randomUUID();
+  const apiURL = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectURI}&state=${state}`;
+  res.render("APIExamNaverLogin", {
+    title: "네아로",
+    apiURL,
+  });
+});
+
+//
+app.get("/login/callback/naver.jsp", async (req, res) => {
+  const code = req.query.code;
+  const state = req.query.state;
+  const clientId = process.env.NAVER_CLIENT_ID!;
+  const clientSecret = process.env.NAVER_CLIENT_SECRET!;
+  const redirectUrl = encodeURIComponent(
+    `${req.protocol}://${req.get("host")}/`
+  );
+  const api_url = `https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=${clientId}&client_secret=${clientSecret}&redirect_uri=${redirectUrl}&code=${code}&state=${state}`;
+
+  const result = await fetch(api_url, {
+    headers: {
+      "X-Naver-Client-Id": clientId,
+      "X-Naver-Client-Secret": clientSecret,
+    },
+  }).then((res) => res.json());
+
+  res.render("APIExamNaverCallback", {
+    title: "네아로 콜백",
+    result: JSON.stringify(result, null, 2),
   });
 });
 
