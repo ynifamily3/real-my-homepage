@@ -91,9 +91,7 @@ app.get("/map", (req, res) => {
 
 app.get("/login.php", (req, res) => {
   const clientId = process.env.NAVER_CLIENT_ID;
-  const redirectURI = `${req.protocol}://${req.get(
-    "host"
-  )}/login/callback/naver.jsp`;
+  const redirectURI = `https://${req.get("host")}/login/callback/naver.jsp`;
   const state = crypto.randomUUID();
   const apiURL = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectURI}&state=${state}`;
   res.render("APIExamNaverLogin", {
@@ -108,9 +106,7 @@ app.get("/login/callback/naver.jsp", async (req, res) => {
   const state = req.query.state;
   const clientId = process.env.NAVER_CLIENT_ID!;
   const clientSecret = process.env.NAVER_CLIENT_SECRET!;
-  const redirectUrl = encodeURIComponent(
-    `${req.protocol}://${req.get("host")}/`
-  );
+  const redirectUrl = encodeURIComponent(`https://${req.get("host")}/`);
   const api_url = `https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=${clientId}&client_secret=${clientSecret}&redirect_uri=${redirectUrl}&code=${code}&state=${state}`;
 
   const result = await fetch(api_url, {
