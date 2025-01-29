@@ -1,0 +1,74 @@
+<style>
+  body {
+    background-color: skyblue;
+  }
+  /* 다크 모드 스타일 */
+  .dark-mode {
+    background-color: #333;
+    color: #fff;
+  }
+
+  .dark-mode button {
+    background-color: #444;
+    color: #fff;
+  }
+  :root {
+    --x: <%- x %>;
+    --y: <%- y %>;
+  }
+</style>
+
+<div class="p-3">
+  <h1 class="text-5xl">B 페이지</h1>
+  <button class="dark_button">다크모드</button>
+  <p>
+    어떤 문장이 있습니다.<br />
+    이 문장은 다크모드에서는 흰색으로 보입니다.
+  </p>
+  <a href="/a">A 페이지로 이동</a>
+</div>
+
+<script>
+  const darkButton = document.querySelector(".dark_button");
+  const body = document.querySelector("body");
+
+  // add hashchange event listener
+  const applyDark = () => {
+    const hash = window.location.hash;
+    if (hash === "#dark") {
+      document.querySelector("body").classList.add("dark-mode");
+      darkButton.textContent = "다크모드 끄기";
+    } else {
+      document.querySelector("body").classList.remove("dark-mode");
+      darkButton.textContent = "다크모드";
+    }
+  };
+  applyDark();
+  window.addEventListener("hashchange", (event) => {
+    document.startViewTransition(() => {
+      // toggle dark mode class
+      applyDark();
+    });
+  });
+
+  darkButton.addEventListener("click", (event) => {
+    // startViewTransition 사용하여 애니메이션 실행
+    // set x, y
+    const rect = darkButton.getBoundingClientRect();
+    console.log(rect.x + rect.width);
+    document.documentElement.style.setProperty(
+      "--x",
+      `${rect.x + rect.width / 2}px`
+    );
+    document.documentElement.style.setProperty(
+      "--y",
+      `${rect.y + rect.height / 2}px`
+    );
+
+    if (body.classList.contains("dark-mode")) {
+      window.location.hash = "";
+    } else {
+      window.location.hash = "dark";
+    }
+  });
+</script>

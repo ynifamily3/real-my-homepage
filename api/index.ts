@@ -30,7 +30,7 @@ app.use(cookieParser());
 
 app.get("/", async (req, res) => {
   const count = Number(await redisClient.get("count")) || 0;
-  console.log("쿠키?", req.cookies["count-checked"]);
+
   if (!req.cookies["count-checked"]) {
     await redisClient.incr("count");
     res.cookie("count-checked", "true", {
@@ -120,6 +120,25 @@ app.get("/login/callback/naver.jsp", async (req, res) => {
   res.render("APIExamNaverCallback", {
     title: "네아로 콜백",
     result: JSON.stringify(result, null, 2),
+  });
+});
+
+app.get("/a", (req, res) => {
+  res.render("vt_a", {
+    title: "a",
+  });
+});
+
+app.get("/b", (req, res) => {
+  // cookie x, y
+  const _x = req.cookies["x"];
+  const _y = req.cookies["y"];
+  const x = _x ? _x + "px" : "50vw";
+  const y = _y ? _y + "px" : "50vh";
+  res.render("vt_b", {
+    title: "b",
+    x: x,
+    y: y,
   });
 });
 

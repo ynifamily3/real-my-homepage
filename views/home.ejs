@@ -1,27 +1,29 @@
-<img src="/apple-icon.png" alt="사과 아이콘" width="192" height="192" />
+<img src="/pochacco.png" alt="사과 아이콘" width="300" height="300" />
 <h1 class="text-3xl text-cyan-500">카운트: <%= count %></h1>
-<p>진짜로 홈페이지 만들어야지...</p>
-<p>그런데 아이디어가 안 떠올라요 ㅜㅜ</p>
-<p>하고 싶은 것</p>
-<ul>
-  <li>MPA 홈페이지 만들기</li>
-  <li>서버 위주로 웹 서비스 만들기</li>
-  <li>온라인 게임 만들기</li>
-</ul>
-<p>폼 제출 테스트: <a href="/form">하러 가기</a></p>
-<button type="button" id="happy">누르면 행복해지는 버튼(GTM테스트)</button>
+<p>이 홈페이지는 잡다한 기능을 테스트하고 있습니다.</p>
+<a href="/b#dark" class="b_dark">B 페이지로 가기</a>
+<p>주소찾기 테스트: <a href="/map">하러 가기</a></p>
+<!-- <button type="button" id="happy">누르면 행복해지는 버튼(GTM테스트)</button> -->
 <script>
-const button = document.getElementById('happy');
-if (button) {
-button.addEventListener('click', () => {
-  const age = Number(prompt("나이를 입력하세요", "29"));
-  window.dataLayer = window.dataLayer || [];
-  window.dataLayer.push({
-      event: '행복버튼클릭',
-      age: age,
+  const a = document.querySelector(".b_dark");
+  a.addEventListener("click", (event) => {
+    document.documentElement.style.setProperty("--x", `${event.clientX}px`);
+    document.documentElement.style.setProperty("--y", `${event.clientY}px`);
+    // 쿠키에도 저장 (x, y)
+    document.cookie = `x=${event.clientX}; path=/`;
+    document.cookie = `y=${event.clientY}; path=/`;
   });
-  alert(`당신은 이제 ${age+1}살이라서 행복합니다.`);
-});
-}
+  const button = document.getElementById("happy");
+  if (button) {
+    button.addEventListener("click", () => {
+      const age = Number(prompt("나이를 입력하세요", "29"));
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: "행복버튼클릭",
+        age: age,
+      });
+      alert(`당신은 이제 ${age + 1}살이라서 행복합니다.`);
+    });
+  }
 </script>
-<footer>제작일: 2025년 1월 7일 22시 49분!</footer>
+<footer>제작일: 2025년 1월 30일 0시 22분!</footer>

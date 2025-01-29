@@ -30,3 +30,60 @@ input[type="submit"] {
 input[type="text"] {
   @apply p-2 border border-gray-300 rounded read-only:bg-gray-100;
 }
+
+@view-transition {
+  navigation: auto;
+}
+:root {
+  --x: 50vw;
+  --y: 50vh;
+}
+
+::view-transition-old(root) {
+  animation: none;
+}
+
+::view-transition-new(root) {
+  animation: expandCircle 1s forwards;
+  clip-path: circle(0% at var(--x) var(--y));
+}
+
+/* 가상 요소를 사용하여 Stroke 추가 */
+::view-transition-new(root)::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: none;
+  border: 5px solid black; /* Stroke 효과 */
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: expandStroke 1s forwards;
+}
+
+@keyframes expandCircle {
+  from {
+    clip-path: circle(0% at var(--x) var(--y));
+  }
+  to {
+    clip-path: circle(150% at var(--x) var(--y));
+  }
+}
+@keyframes expandStroke {
+  from {
+    width: 0px;
+    height: 0px;
+    opacity: 1;
+    left: var(--x);
+    top: var(--y);
+  }
+  to {
+    width: 300vw;
+    height: 300vw;
+    opacity: 0;
+    left: var(--x);
+    top: var(--y);
+  }
+}
