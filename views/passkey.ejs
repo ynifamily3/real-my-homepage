@@ -1,0 +1,77 @@
+<style>
+  body {
+    background-color: #333;
+    color: #fff;
+  }
+</style>
+
+<script>
+  function uint8ArrayToBase64(uint8Array) {
+    return btoa(String.fromCharCode(...uint8Array));
+  }
+
+  function base64ToUint8Array(base64) {
+    return new Uint8Array(
+      atob(base64)
+        .split("")
+        .map((char) => char.charCodeAt(0))
+    );
+  }
+  async function registerPassKey(username) {
+    const response = await fetch("/cgi-bin/register-challenge.cgi", {
+      method: "POST",
+      body: JSON.stringify({ username }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    let options = await response.json();
+    options.challenge = base64ToUint8Array(options.challenge);
+    options.user.id = new Uint8Array(options.user.id);
+    const credential = await navigator.credentials.create({
+      publicKey: options,
+    });
+
+    const credentialResponse = {
+      id: credential.id,
+      rawId: new Uint8Array(credential.rawId),
+      type: credential.type,
+      response: {
+        attestationObject: uint8ArrayToBase64(
+          new Uint8Array(credential.response.attestationObject)
+        ),
+        clientDataJSON: uint8ArrayToBase64(
+          new Uint8Array(credential.response.clientDataJSON)
+        ),
+      },
+    };
+
+    await fetch("/cgi-bin/register.cgi", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(credentialResponse),
+    });
+
+    alert("패스키 등록 완료");
+  }
+</script>
+
+<div class="p-3">
+  <h1>패스키 등록</h1>
+  <p>패스키를 등록합니다.</p>
+  <form onsubmit="event.preventDefault(); registerPassKey(username.value)">
+    <div class="form-group">
+      <label for="username">사용자 이름</label>
+      <input
+        type="text"
+        class="form-control"
+        id="username"
+        name="username"
+        required
+      />
+    </div>
+    <button type="submit">등록</button>
+  </form>
+</div>

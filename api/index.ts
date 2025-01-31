@@ -4,8 +4,11 @@ import expressLayouts from "express-ejs-layouts";
 import "dotenv/config";
 import { createClient } from "redis";
 import cookieParser from "cookie-parser";
+import { v4 as uuidv4 } from "uuid";
+import { f2l } from "./passkey";
 
 const app = express();
+app.use(express.json());
 app.disable("x-powered-by");
 
 const redisClient = createClient({
@@ -139,6 +142,70 @@ app.get("/b", (req, res) => {
     title: "b",
     x: x,
     y: y,
+  });
+});
+
+app.get("/cgi-bin/passkey.cgi", (req, res) => {
+  res.render("passkey", {
+    title: "패스키 로그인",
+  });
+});
+
+// Uint8Array → Base64 (서버에서 클라이언트로 전송)
+function uint8ArrayToBase64(buffer: ArrayBuffer) {
+  return Buffer.from(buffer).toString("base64");
+}
+
+app.post("/cgi-bin/register-challenge.cgi", async (req, res) => {
+  const { username } = req.body;
+  if (!username) {
+    res.status(400).json({ error: "사용자 이름이 필요합니다." });
+    return;
+  }
+
+  const userId = uuidv4();
+  const challenge = await f2l.attestationOptions();
+  challenge.user.id = new TextEncoder().encode(userId);
+  challenge.user.name = username;
+  challenge.user.displayName = username;
+
+  const result = {
+    ...challenge,
+    challenge: uint8ArrayToBase64(challenge.challenge),
+  };
+
+  await redisClient.set(`user:${username}:challenge`, JSON.stringify(result));
+  await redisClient.set(`user:${username}:id`, userId);
+
+  res.json(result);
+});
+
+app.post("/cgi-bin/register.cgi", async (req, res) => {
+  const { username, id, response } = req.body;
+  if (!username || !id || !response) {
+    res.status(400).json({ error: "필요한 정보가 없습니다." });
+    return;
+  }
+
+  const challengeData = await redisClient.get(`user:${username}:challenge`);
+  if (!challengeData) {
+    res.status(400).json({ error: "challenge 없음" });
+    return;
+  }
+  const expectedChallenge = JSON.parse(challengeData);
+
+  const attestation = f2l.attestationResult(response, {
+    challenge: expectedChallenge.challenge,
+  } as any);
+
+  await redisClient.set(
+    `user:${username}:credential`,
+    JSON.stringify((await attestation).authnrData)
+  );
+
+  res.json({
+    success: true,
+    test: JSON.stringify((await attestation).authnrData),
   });
 });
 

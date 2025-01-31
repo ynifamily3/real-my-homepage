@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently \"tsx watch api/index.ts\" \"tailwindcss -i ./api/base.css -o ./public/style.css --watch\"",
-    "prebuild": "tailwindcss -i ./api/base.css -o ./public/style.css",
+    "dev": "concurrently \"tsx watch api/index.ts\" \"npx @tailwindcss/cli -i ./api/base.css -o ./public/style.css --watch\"",
+    "prebuild": "npx @tailwindcss/cli -i ./api/base.css -o ./public/style.css",
     "build": "tsc"
   },
   "devDependencies": {
@@ -13,16 +13,19 @@
     "@types/express-ejs-layouts": "^2.5.4",
     "@types/node": "^22.10.2",
     "concurrently": "^9.1.2",
-    "tailwindcss": "^3.4.17",
+    "tailwindcss": "^4.0.1",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2"
   },
   "dependencies": {
+    "@tailwindcss/cli": "^4.0.1",
     "cookie-parser": "^1.4.7",
     "dotenv": "^16.4.7",
     "ejs": "^3.1.10",
     "express": "^4.21.2",
     "express-ejs-layouts": "^2.5.1",
-    "redis": "^4.7.0"
+    "fido2-lib": "^3.5.3",
+    "redis": "^4.7.0",
+    "uuid": "^11.0.5"
   }
 }
