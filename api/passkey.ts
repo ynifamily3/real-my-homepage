@@ -1,7 +1,7 @@
 import { Fido2Lib } from "fido2-lib";
 
 export const f2l = new Fido2Lib({
-  rpId: "localhost",
+  rpId: process.env.RP_ID,
   rpName: "로코모에",
   timeout: 6 * 10 * 10 * 1000,
   rpIcon: "https://roco.moe/apple-icon.png",
